@@ -74,3 +74,4 @@ Vérifiez bien vos données avant de cliquer sur "Créer mon compte".';
 $string['updatemyprofile'] = 'Mettre à jour mes informations';
 $string['welcomedashboard'] = 'Bienvenue {$a}!';
 $string['totop'] = 'Aller en haut';
+$string['menu_tooltip'] = 'Ouvrir le menu';

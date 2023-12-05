@@ -70,3 +70,4 @@ $string['studentcourseid'] = 'Student course ID for questionnaire';
 $string['updatemyprofile'] = 'Update my profile';
 $string['welcomedashboard'] = 'Welcome {$a}!';
 $string['totop'] = 'Go to top';
+$string['menu_tooltip'] = 'Open the menu';

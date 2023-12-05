@@ -178,4 +178,59 @@ class core_renderer extends \theme_clboost\output\core_renderer {
         }
         return $this->render($menu);
     }
+
+    /**
+     * Render the Tools menu in the navbar.
+     * @return string HTML containing the rendered menu.
+     */
+    public function toolsmenu() {
+        global $PAGE;
+        $template = new \stdClass();
+        $template->menuitems = [];
+
+        if ($PAGE->primarynav) {
+            foreach ($PAGE->primarynav->children as $node) {
+                if ($node->icon && $node->icon->pix == 'i/navigationitem') {
+                    $node->icon->pix = 'book';
+                }
+                $template->menuitems[] = [
+                    'id' => $node->key,
+                    'url' => $node->action,
+                    'text' => $node->text,
+                    'icon' => $this->render($node->icon),
+                    'color' => 'primary',
+                    'newwindow' => false
+                ];
+            }
+        }
+        // Add the secondary navigation items on these page layouts
+        $pagelayouts = ['mycourses', 'my-index', 'frontpage', 'admin'];
+        $secondarynavitems = ['editsettings', 'participants', 'coursereports', 'questionbank', 'contentbank'];
+        if (in_array($PAGE->pagelayout, $pagelayouts) && $PAGE->secondarynav) {
+            foreach ($PAGE->secondarynav->children as $node) {
+                if (!in_array($node->key, $secondarynavitems)) {
+                    continue;
+                }
+                if ($node->icon && $node->icon->pix == 'i/navigationitem') {
+                    $node->icon->pix = 'book';
+                }
+                $template->menuitems[] = [
+                    'id' => $node->key,
+                    'url' => $node->action,
+                    'text' => $node->text,
+                    'icon' => $this->render($node->icon),
+                    'color' => 'primary',
+                    'newwindow' => false
+                ];
+            }
+        }
+
+        // Look for plugins adding menu items.
+        $callback = get_plugins_with_function('theme_envf_tools_menu_items');
+        foreach ($callback as $plugin => $function) {
+            $template->menuitems = array_merge($template->menuitems, $function());
+        }
+        $template->hasitems = !empty($template->menuitems);
+        return $this->render_from_template('theme_envf/toolsmenu', $template);
+    }
 }
